@@ -1,0 +1,32 @@
+{
+  "kullanici": [
+    {
+      "username": "fatih",
+      "password": "12345",
+      "attribute": "admin"
+    },
+    {
+      "username": "ahmet",
+      "password": "67890",
+      "attribute": "user"
+    }
+  ],
+
+  "sorular": [
+    {
+      "id": 0,
+      "soru": "Dün ne yaptın ?",
+      "cevap": " dosya hazılardım "
+    },
+    {
+      "id": 1,
+      "soru": "Bugün ne yapacaksın ?",
+      "cevap": " component hazırlayacağım "
+    },
+    {
+      "id": 2,
+      "soru": "Engelin var mı ?",
+      "cevap": " backend'i bekliyorum"
+    }
+  ]
+}

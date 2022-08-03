@@ -1,0 +1,18 @@
+.login {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 200px;
+  background-color: rgb(55, 65, 150);
+  width: 600px;
+  min-height: 300px;
+  border-radius: 20px;
+}
+body {
+  background-color: rgb(21, 24, 73);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: auto;
+}

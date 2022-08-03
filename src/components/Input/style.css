@@ -1,0 +1,23 @@
+.pass-input {
+  border-radius: 20px;
+  width: auto;
+  padding: 10px;
+  margin: 5px;
+  text-align: center;
+}
+.danger-input {
+  border-radius: 20px;
+  width: auto;
+  padding: 10px;
+  margin: 5px;
+  text-align: center;
+  border-color: rgb(216, 25, 25);
+  color: rgb(216, 25, 25);
+}
+#input {
+  display: flex;
+  width: auto;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

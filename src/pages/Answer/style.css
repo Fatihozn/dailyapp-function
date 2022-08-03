@@ -1,0 +1,13 @@
+.answer {
+  margin: 10px;
+}
+.dark {
+  color: white;
+}
+#answerdiv {
+  background-color: rgb(55, 65, 150);
+  width: 600px;
+  min-height: 300px;
+  border-radius: 20px;
+  margin-top: 170px;
+}

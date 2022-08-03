@@ -1,0 +1,35 @@
+#ques {
+  list-style-type: none;
+  margin: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+ul {
+  width: 100%;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  right: 30px;
+}
+.question {
+  display: block;
+  margin: auto;
+}
+.addbutton {
+  float: right;
+  margin: 10px;
+}
+#question {
+  background-color: rgb(55, 65, 150);
+  width: 600px;
+  min-height: 300px;
+  border-radius: 20px;
+  margin-top: 170px;
+}
+#buttondiv {
+  text-align: center;
+}
