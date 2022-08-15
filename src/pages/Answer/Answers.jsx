@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import Input from "../../components/Input/Input";
 import Submit from "../../components/Button/Submitbutton/Button";
+import { API } from "../../api";
+
+//import { mainContext } from "../../components/Context";
 
 import "./style.css";
 
@@ -10,6 +13,14 @@ import data from "../../data.json";
 export default function Answers() {
   const [sorular, setSorular] = useState(data.sorular);
   const [error, setError] = useState([]);
+
+  //const { count } = useContext(mainContext);
+
+  useEffect(() => {
+    API()
+      .get("/todos")
+      .then((res) => console.log(res.data[0].title));
+  });
 
   const submitClick = () => {
     const errors = [...error];
@@ -25,6 +36,7 @@ export default function Answers() {
       });
     }
     setError(errors);
+    API().put("/todos", sorular[0].cevap);
   };
 
   const onChange = (event) => {
@@ -47,12 +59,20 @@ export default function Answers() {
       submitClick();
     }
   };
-  const gotohomepage = () => {
-    window.location.replace("/login");
+
+  const logOut = () => {
+    localStorage.clear();
+    window.location.replace("/");
   };
 
   return (
     <div id="answerdiv">
+      <div>
+        <Submit>{Number(localStorage.getItem("count"))}</Submit>
+      </div>
+      <div>
+        <Submit send={logOut}>LOG OUT</Submit>
+      </div>
       <ul>
         {sorular.map((question) => (
           <div key={question.id} className="answer">
@@ -68,7 +88,6 @@ export default function Answers() {
           </div>
         ))}
         <Submit send={submitClick}>Submit</Submit>
-        <Submit send={gotohomepage}>Home Page</Submit>
       </ul>
     </div>
   );

@@ -1,16 +1,23 @@
 /* eslint-disable no-debugger */
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+//import { useNavigate } from "react-router-dom";
 
 import Add from "../../components/Button/Addbutton/Button";
 import Del from "../../components/Button/Deletebutton/Button";
 import Submit from "../../components/Button/Submitbutton/Button";
 import Input from "../../components/Input/Input";
+import Icon from "../../components/Icon";
+
+import { mainContext } from "../../components/Context";
 
 import "./style.css";
 
 import data from "../../data.json";
 
 export default function Questions() {
+  // const navigate = useNavigate();
+  const { count, setCount, IconCount, setIconCount } = useContext(mainContext);
+
   const [sorular, setSorular] = useState(data.sorular);
   const [error, setError] = useState("");
 
@@ -31,6 +38,9 @@ export default function Questions() {
 
   const addOnClick = () => {
     const questions = [...sorular];
+
+    setCount(count + 1);
+    setIconCount(IconCount + 1);
 
     questions.push({
       id: Date.now(),
@@ -56,12 +66,14 @@ export default function Questions() {
       });
     }
     setError(errors);
+    localStorage.setItem("count", count);
   };
 
   const del = (event) => {
     const { id } = event.target;
     const dizi = sorular.filter((item) => Number(id) !== item.id);
     setSorular(dizi);
+    setIconCount(IconCount - 1);
   };
 
   const keyDown = (event) => {
@@ -69,12 +81,18 @@ export default function Questions() {
       submitClick();
     }
   };
-  const goToHomePage = () => {
-    window.location.replace("/login");
+
+  const logOut = () => {
+    localStorage.clear();
+    window.location.replace("/");
   };
 
   return (
     <div id="question">
+      <div>
+        <Submit send={logOut}>LOG OUT</Submit>
+        <Icon />
+      </div>
       <div className="addbutton">
         <Add send={addOnClick} />
       </div>
@@ -94,7 +112,6 @@ export default function Questions() {
         ))}
         <div id="buttondiv">
           <Submit send={submitClick}>Submit</Submit>
-          <Submit send={goToHomePage}>Home Page</Submit>
         </div>
       </ul>
     </div>

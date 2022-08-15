@@ -1,51 +1,81 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+
+import api from "../../api";
 
 import Sumbit from "../../components/Button/Submitbutton/Button";
+
+import { mainContext } from "../../components/Context";
+
 import Input from "../../components/Input/Input";
+import Loading from "../pop-up/Loading";
+import Pop from "../pop-up/Pop";
+
 import "./style.css";
 
-import data from "../../data.json";
+function maybeValidEmail(email) {
+  return /^\S+@\S+\.\S+$/.test(email);
+}
+
+function maybeValidPassword(password) {
+  const splittedPassword = password.split(""); // split string i array e çeviriyor
+  return splittedPassword.length > 5 ? true : false;
+}
 
 export default function Login() {
+  const count = useContext(mainContext);
+
+  console.log({ count });
   const [userInfo, setUserInfo] = useState({
-    username: "",
-    password: "",
+    email: "fatih@ozn.com",
+    password: "2476161",
   });
+
+  const [isPop, setisPop] = useState(false);
+  const [loading, setloading] = useState(false);
+
   const [errors, setErrors] = useState({
-    usernameError: "",
+    emailError: "",
     passwordError: "",
   });
 
   const onClick = () => {
-    if (!userInfo.username || !userInfo.password) {
+    // Email geçerli mi
+    setloading(true);
+    const isEmailValid = maybeValidEmail(userInfo.email);
+    // Şifre min. 8 karakter olmalı
+    const isPasswordValid = maybeValidPassword(userInfo.password);
+    if (
+      !userInfo.email ||
+      !userInfo.password ||
+      !isEmailValid ||
+      !isPasswordValid
+    ) {
+      if (!userInfo.email || !userInfo.password) {
+        return setErrors({
+          emailError: !userInfo.email && "email alanı boş geçilemez",
+          passwordError: !userInfo.password && "password alanı boş geçilemez",
+        });
+      }
       return setErrors({
-        usernameError: !userInfo.username && "username alanı boş geçilemez",
-        passwordError: !userInfo.password && "password alanı boş geçilemez",
+        emailError: !isEmailValid && "Lütfen geçerli bir mail adresi giriniz",
+        passwordError: !isPasswordValid && "Şifre en az 6 karakter olmalıdır",
       });
     }
-    const filteredUser = data.kullanici.filter((user) => {
-      return (
-        user.username === userInfo.username &&
-        user.password === userInfo.password &&
-        user.attribute === "user"
-      );
-    });
 
-    const filteredAdmin = data.kullanici.filter((user) => {
-      return (
-        user.username === userInfo.username &&
-        user.password === userInfo.password &&
-        user.attribute === "admin"
-      );
-    });
-
-    if (filteredUser.length > 0) {
-      window.location.replace("/answers");
-    } else if (filteredAdmin.length > 0) {
-      window.location.replace("/questions");
-    } else {
-      alert("EKSİK YADA HATALI TUŞLADINIZ");
-    }
+    api()
+      .post("/auth/login", userInfo)
+      .then((response) => {
+        if (response.request.status === 200) {
+          localStorage.setItem("token", response.data.accessToken);
+          localStorage.setItem("admin", userInfo.email);
+          setloading(false);
+          setisPop(true);
+          setTimeout(() => {
+            window.location.replace("/");
+          }, 1000);
+        }
+      })
+      .catch((error) => alert("eksik yada hatalı tuşladınız"));
   };
 
   const onChange = (event) => {
@@ -64,32 +94,43 @@ export default function Login() {
 
   // setErrors({
   //   ...errors,
-  //   usernameError: "asdfgf",
+  //   emailError: "asdfgf",
   // });
 
   const keyDown = (event) => {
     if (event.keyCode === 13) {
-      this.onClick();
+      onClick();
     }
   };
 
   return (
-    <div className="login">
-      <Input
-        place="username"
-        id="username"
-        change={onChange}
-        onKeyDown={keyDown}
-        error={errors.usernameError}
-      />
-      <Input
-        place="PASSWORD"
-        id="password"
-        change={onChange}
-        onKeyDown={keyDown}
-        error={errors.passwordError}
-      />
-      <Sumbit send={onClick}>Submit</Sumbit>
-    </div>
+    <>
+      {loading && <Loading />}
+      {isPop &&
+        (localStorage.getItem("admin") === "fatih@ozn.com" ? (
+          <Pop> GİRİŞ BAŞARILI QUESTİONS </Pop>
+        ) : (
+          <Pop>GİRİŞ BAŞARILI ANSWERS </Pop>
+        ))}
+      <div className="login">
+        <Input
+          place="email"
+          id="email"
+          value={userInfo.email}
+          change={onChange}
+          onKeyDown={keyDown}
+          error={errors.emailError}
+        />
+        <Input
+          place="PASSWORD"
+          id="password"
+          value={userInfo.password}
+          change={onChange}
+          onKeyDown={keyDown}
+          error={errors.passwordError}
+        />
+        <Sumbit send={onClick}>Submit</Sumbit>
+      </div>
+    </>
   );
 }
