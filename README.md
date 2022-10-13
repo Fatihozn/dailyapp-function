@@ -1,5 +1,9 @@
-# Getting Started with Create React App
 
+![dailyapp](https://user-images.githubusercontent.com/100231583/195589067-71c0d061-b1ff-4014-a816-54fa34c576ed.png)
+![dailyapp2](https://user-images.githubusercontent.com/100231583/195589070-5e7c8e56-5a0f-40c7-b572-c07716c71353.png)
+![dailyapp1](https://user-images.githubusercontent.com/100231583/195589073-3ee0a430-bab6-425d-87fd-8bc9445ed4f6.png)
+![dailyapp3](https://user-images.githubusercontent.com/100231583/195589075-78e2ceb9-1df5-45bf-9979-722a22ee2469.png)
+# Getting Started with Create React App
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
